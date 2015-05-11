@@ -1,3 +1,11 @@
+\\psf\Google Drive\Year 2\Task-Based Software Engineering\Assignment 3\Calculator\Calculator\bin\Debug\Calculator.XML
+\\psf\Google Drive\Year 2\Task-Based Software Engineering\Assignment 3\Calculator\Calculator\obj\Debug\Calculator.exe
+\\psf\Google Drive\Year 2\Task-Based Software Engineering\Assignment 3\Calculator\Calculator\obj\Debug\Calculator.pdb
+\\psf\Google Drive\Year 2\Task-Based Software Engineering\Assignment 3\Calculator\Calculator\bin\Debug\Calculator.exe.config
+\\psf\Google Drive\Year 2\Task-Based Software Engineering\Assignment 3\Calculator\Calculator\bin\Debug\Calculator.exe
+\\psf\Google Drive\Year 2\Task-Based Software Engineering\Assignment 3\Calculator\Calculator\bin\Debug\Calculator.pdb
+\\psf\Google Drive\Year 2\Task-Based Software Engineering\Assignment 3\Calculator\Calculator\bin\Debug\FSharp.Core.dll
+\\psf\Google Drive\Year 2\Task-Based Software Engineering\Assignment 3\Calculator\Calculator\bin\Debug\FSharp.Core.xml
 D:\Users\Giovanni\Google Drive\Year 2\Task-Based Software Engineering\Assignment 3\Calculator\Calculator\bin\Debug\Calculator.exe.config
 D:\Users\Giovanni\Google Drive\Year 2\Task-Based Software Engineering\Assignment 3\Calculator\Calculator\bin\Debug\Calculator.XML
 D:\Users\Giovanni\Google Drive\Year 2\Task-Based Software Engineering\Assignment 3\Calculator\Calculator\bin\Debug\Calculator.exe
