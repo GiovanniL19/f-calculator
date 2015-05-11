@@ -8,16 +8,14 @@ let finCal = new ArrayList()
 let historyA = new ArrayList()
 
 
-//Need to implement BODMAS with bracket support 
-//Need to implement parallel
-
-
 let fileMathChoose() =
+    let mutable output = ""
+    
     Console.Write("Enter the path of your .txt file: ")
     let file = Console.ReadLine()
-    let mutable output = ""
+    
 
-    if Directory.Exists(file) then
+    if File.Exists(file) && Path.GetExtension(file).Equals".txt" then //Check is path exists
         //Get text file
         let inputFile = File.ReadAllLines(file)
 
@@ -108,74 +106,53 @@ let fileMathChoose() =
     
         printfn "%s" output
     else
-        output <- "Path does not exist"
+        output <- "Path does not exist - " + file
         printfn "%s" output
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 let fileMathDefault() =
-
-    //Get text file
-    let inputFile = File.ReadAllLines("sums.txt")
-
     let mutable output = ""
+
+    if File.Exists("sums.txt") then
+        //Get text file
+        let inputFile = File.ReadAllLines("sums.txt")
+
+        let math = new List<string>()
+        let numbers = new List<int>()
     
-
-    let math = new List<string>()
-    let numbers = new List<int>()
-    
-    //Read lines in file
-    for line in inputFile do
-        math.Clear
-        numbers.Clear
+        //Read lines in file
+        for line in inputFile do
+            math.Clear
+            numbers.Clear
 
 
-        let mathSymbol = Regex.Replace(line, @"\d", "").Trim() //replace numbers with letters (the operation)
+            let mathSymbol = Regex.Replace(line, @"\d", "").Trim() //replace numbers with letters (the operation)
         
-        //STORE THE SYMBOL IN THE LIST (STRINGS)
-        for mathS in mathSymbol do
+            //STORE THE SYMBOL IN THE LIST (STRINGS)
+            for mathS in mathSymbol do
 
-            match mathS.ToString() with
-            | "+" -> math.Add(mathS.ToString())
-            | "-" -> math.Add(mathS.ToString())
-            | "*" -> math.Add(mathS.ToString())
-            | "/" -> math.Add(mathS.ToString())
+                match mathS.ToString() with
+                | "+" -> math.Add(mathS.ToString())
+                | "-" -> math.Add(mathS.ToString())
+                | "*" -> math.Add(mathS.ToString())
+                | "/" -> math.Add(mathS.ToString())
     
 
-        //STORE THE NUMBER IN THE NUMBERS LIST (INTERGERS)
+            //STORE THE NUMBER IN THE NUMBERS LIST (INTERGERS)
 
-        let number = Regex.Matches(line, @"\d+") //Matches input with numbers same a 0-9
+            let number = Regex.Matches(line, @"\d+") //Matches input with numbers same a 0-9
 
-        for num in number do
-            numbers.Add(int num.Value)
+            for num in number do
+                numbers.Add(int num.Value)
 
 
 
-        let operation = math.[0].ToString()
+            let operation = math.[0].ToString()
 
-        //Calculate first two numbers
-        match operation with
-        | "+" ->    let result = numbers.[0] + numbers.[1]
-                    ignore(numbers.[0] <- result)
-                    ignore(numbers.Remove(numbers.[1]))
-                    ()
-        | "-" ->    let result = numbers.[0] - numbers.[1]
-                    ignore(numbers.[0] <- result)
-                    ignore(numbers.Remove(numbers.[1]))
-                    ()
-        | "/" ->    let result = numbers.[0] / numbers.[1]
-                    ignore(numbers.[0] <- result)
-                    ignore(numbers.Remove(numbers.[1]))
-                    ()
-        | "*" ->    let result = numbers.[0] * numbers.[1]
-                    ignore(numbers.[0] <- result)
-                    ignore(numbers.Remove(numbers.[1]))
-                    ()
-
-        //Calculate multiple
-
-        let mutable position = 1
-
-        while numbers.Count <>  1 do
-            match math.[position] with
+            //Calculate first two numbers
+            match operation with
             | "+" ->    let result = numbers.[0] + numbers.[1]
                         ignore(numbers.[0] <- result)
                         ignore(numbers.Remove(numbers.[1]))
@@ -192,27 +169,47 @@ let fileMathDefault() =
                         ignore(numbers.[0] <- result)
                         ignore(numbers.Remove(numbers.[1]))
                         ()
-            position <- position + 1
-        
-        
-        output <- output + "\n" + line + "=" + numbers.[numbers.Count-1].ToString()
 
-        ignore(historyA.Add(line + "=" + numbers.[numbers.Count-1].ToString()))
+            //Calculate multiple
+
+            let mutable position = 1
+
+            while numbers.Count <>  1 do
+                match math.[position] with
+                | "+" ->    let result = numbers.[0] + numbers.[1]
+                            ignore(numbers.[0] <- result)
+                            ignore(numbers.Remove(numbers.[1]))
+                            ()
+                | "-" ->    let result = numbers.[0] - numbers.[1]
+                            ignore(numbers.[0] <- result)
+                            ignore(numbers.Remove(numbers.[1]))
+                            ()
+                | "/" ->    let result = numbers.[0] / numbers.[1]
+                            ignore(numbers.[0] <- result)
+                            ignore(numbers.Remove(numbers.[1]))
+                            ()
+                | "*" ->    let result = numbers.[0] * numbers.[1]
+                            ignore(numbers.[0] <- result)
+                            ignore(numbers.Remove(numbers.[1]))
+                            ()
+                position <- position + 1
         
-        numbers.Clear()
-        math.Clear()
+        
+            output <- output + "\n" + line + " = " + numbers.[numbers.Count-1].ToString()
+
+            ignore(historyA.Add(line + " = " + numbers.[numbers.Count-1].ToString()))
+        
+            numbers.Clear()
+            math.Clear()
 
     
-    printfn "%s" output
+        printfn "%s" output
+    else
+        output <- "Path no longer exists"
+        printfn "%s" output
 
-let menuFile() =
-    Console.WriteLine("1:\tUse default .txt file\n2:\tChoose own")
-    let input = Console.ReadLine()
-
-    match input with
-            | "1" -> fileMathDefault()
-            | "2" -> fileMathChoose()
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 let calculator() =
     let mutable output = ""
@@ -222,7 +219,6 @@ let calculator() =
 
     Console.Write ("Enter your equation: ")
     let equa = Console.ReadLine()
-
 
     //REPLACE AND MATCH
     let mathSymbol = Regex.Replace(equa, @"\d+", "").Trim() //replaces any numbers 0-9 with nothing ("")
@@ -291,7 +287,7 @@ let calculator() =
         position <- position + 1
         
 
-    output <- equa + "=" + numbers.[numbers.Count-1].ToString()
+    output <- "\n" + equa + "=" + numbers.[numbers.Count-1].ToString()
 
     ignore(historyA.Add(output))
         
@@ -312,7 +308,21 @@ let history() =
         
     printfn "%s" output
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+let menuFile() =
+    Console.Write("1:\tUse default .txt file (bin\\sums.txt)\n2:\tEnter your .txt path (e.g Documents\\sums.txt)\n\nInput: ")
+    let input = Console.ReadLine()
+
+    match input with
+            | "1" -> fileMathDefault()
+            | "2" -> fileMathChoose()
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //MAIN CODE
 [<EntryPoint>]
@@ -322,7 +332,7 @@ let main argv =
 
     //MENU
     while loop do
-        Console.Write ("\n\n----------Menu------------\n\n 1:\tMain Calculator\n 2:\tAnswer File\n 3:\tHistory\n 4:\tExit\n\n--------------------------\n\nInput: ")
+        Console.Write ("\n\n----------Menu------------\n\n 1:\tMain Calculator\n 2:\tLoad File\n 3:\tHistory\n 4:\tExit\n\n--------------------------\n\nInput: ")
     
         let uInput = Console.ReadLine().ToUpper()
 
